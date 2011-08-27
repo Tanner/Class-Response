@@ -1,5 +1,7 @@
 ClassResponse::Application.routes.draw do
   match ':id' => 'quizzes#show'
+  
+  match ':id/json' => 'quizzes#json'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
