@@ -3,7 +3,8 @@ require 'json/add/rails'
 class QuizzesController < ApplicationController
     def show
         @quiz = Quiz.find(params[:id])
-        render :json => @quiz
+        
+        render 'show'
     end
 
     def json
