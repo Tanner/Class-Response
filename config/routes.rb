@@ -1,7 +1,8 @@
 ClassResponse::Application.routes.draw do
-  match ':id' => 'quizzes#show'
-  
-  match ':id/json' => 'quizzes#json'
+  constraints(:id => /[0-9]+/) do
+    match ':id' => 'quizzes#show'
+    match ':id/json' => 'quizzes#json'
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
