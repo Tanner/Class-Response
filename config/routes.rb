@@ -1,4 +1,5 @@
 ClassResponse::Application.routes.draw do
+  match ':id' => 'quizzes#show'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
