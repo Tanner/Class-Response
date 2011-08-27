@@ -9,9 +9,16 @@ class QuizzesController < ApplicationController
 
     def json
         @quiz = Quiz.find(params[:id])
+        @current_question = @quiz.current_question
 
         result = Hash.new
-        result['quiz_name'] = @quiz.name
+        result['value'] = @current_question.question
+
+        choices = Array.new
+        @current_question.answers.each do |answer|
+            choices.push Hash["value" => answer.answer]
+        end
+        result['choices'] = choices
 
         render :text => result.to_json 
     end
