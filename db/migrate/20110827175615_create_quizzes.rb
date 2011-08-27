@@ -2,7 +2,6 @@ class CreateQuizzes < ActiveRecord::Migration
   def self.up
     create_table :quizzes do |t|
       t.string :name
-      t.integer :id
 
       t.timestamps
     end
