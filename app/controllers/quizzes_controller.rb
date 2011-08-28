@@ -16,7 +16,7 @@ class QuizzesController < ApplicationController
 
         result = Hash.new
         result['type'] = "question"
-        result['id'] = @current_question.id
+        result['question_id'] = @current_question.id
         result['sort_index'] = @current_question.sort
         result['total_count'] = @quiz.questions.count
         result['format'] = "multiple-choice"
