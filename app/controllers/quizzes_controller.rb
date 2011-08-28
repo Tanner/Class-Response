@@ -28,12 +28,28 @@ class QuizzesController < ApplicationController
         @quiz = Quiz.find(params[:id])
         @students = Student.all
         csv = CSV.generate do |csv|
-            @students.each do |student|
-                submissions = student.submissions.where(:quiz_id => @quiz.id)
-                submissions.each do |submission|
-                    csv << [student.identifier, @quiz.name, submission.question.question, submission.answer.answer]
-                end
+            header = Array.new
+            header.push("Student Identifier")
+            @quiz.questions.each do |question|
+                header.push(question.question)
             end
+            csv << header
+
+            @quiz.questions.each do |question|
+                @students = Student.all
+
+                @students.each do |student|
+                    studentLine = Array.new
+                    studentLine.push(student.identifier)
+
+                    submissions = student.submissions.where(:quiz_id => @quiz.id, :question_id => question.id)
+                    submissions.each do |submission|
+                        studentLine.push(submission.answer.answer)
+                    end
+
+                    csv << studentLine
+                end
+            end 
         end
 
         render :text => csv
