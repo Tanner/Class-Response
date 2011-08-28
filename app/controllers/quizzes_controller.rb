@@ -37,12 +37,22 @@ class QuizzesController < ApplicationController
 
         if (question_id && answer_id && student_identifier)
             # JSON is valid
-            submission = Submission.new
-            submission.question_id = question_id
-            submission.answer_id = answer_id
-            submission.quiz_id = params[:id]
-            submission.student_id = Student.where("identifier" => student_identifier)
-            submission.save
+            student_id = Student.where("identifier" => student_identifier)
+            if (student_id)
+                old_submission = Submission.where("question_id" => question_id, "student_id" => student_id)
+                if (old_submission != nil)
+                    old_submission.delete
+                end
+
+                submission = Submission.new
+                submission.question_id = question_id
+                submission.answer_id = answer_id
+                submission.quiz_id = params[:id]
+                submission.student_id = Student.where("identifier" => student_identifier)
+                submission.save
+            else
+                head :bad_request
+            end
 
             render :text => [question_id, answer_id, student_identifier]
         else
