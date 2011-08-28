@@ -1,8 +1,8 @@
 class Submission < ActiveRecord::Base
-  has_one :student
-  has_one :question
-  has_one :answer
-  has_one :quiz
+  belongs_to :student
+  belongs_to :question
+  belongs_to :answer
+  belongs_to :quiz
 
   validates_presence_of :student_id, :question_id, :answer_id
 end
