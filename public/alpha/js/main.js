@@ -1,8 +1,11 @@
 var timestamp = null;
 var loading = false;
-var currentQuestionId = 0;
-var currentBlock = null;
 var interactionEnabled = true;
+
+var activeSortIndex = -1;
+var oldBlock = null;
+var currentBlock = null;
+var currentDisplayData = null;
 
 function waitForMsg() {
 	if (!loading) {
@@ -15,16 +18,9 @@ function waitForMsg() {
 				if (displayData.type == "question") {
 					setPageControl(parseInt(displayData.sort_index, 10), parseInt(displayData.total_count, 10));
 					
-					if (displayData.format == "multiple-choice") {
-						var animate = ($(".qBlock").length > 0 && currentQuestionId != displayData.id);
-						
-						setQuestion(displayData.id, displayData.state, displayData.value, displayData.choices, animate);
-						
-						if (displayData.state == "finished") {
-							setQuestionResults(displayData.answer, displayData.choices);
-						} else {
-							clearQuestionResults();
-						}
+					if (displayData.format == "multiple-choice") {						
+						currentDisplayData = displayData;
+						reload();
 					}
 				}
 			}
@@ -34,30 +30,20 @@ function waitForMsg() {
 	setTimeout('waitForMsg()', 1000);
 }
 
-function addNewBlock(id, animate) {
-	if ($(".qBlock").length > 1) {
-		$(".qBlock:last").remove();
+function reload() {
+	var state = currentDisplayData.state;
+	var value = currentDisplayData.value;
+	var choices = currentDisplayData.choices;
+	var animate = ($(".qBlock").length > 0 && activeSortIndex != currentDisplayData.sort_index);
+	var animteDirection = 0;
+	if (currentDisplayData.sort_index > activeSortIndex) {
+		animateDirection = -1;
+	} else if (currentDisplayData.sort_index < activeSortIndex) {
+		animateDirection = 1;
 	}
-		
-	console.log(currentBlock.outerHeight());
-	currentBlock.css("margin-top", "-" + (currentBlock.outerHeight()/2 + 29) + "px");
+	var answer = currentDisplayData.answer;
 	
-	if (animate) {
-		currentBlock.scale(0.75);
-		currentBlock.animate({
-			left: '50%'
-		}, 500, function() {
-			$(this).animate({
-				scale: '1.0'
-			}, 250);
-		});
-	} else {
-		currentBlock.css("left", "50%");
-	}
-};
-
-function setQuestion(id, state, value, choices, animate) {
-	currentQuestionId = id;
+	activeSortIndex = currentDisplayData.sort_index;
 	
 	if (state == "finished") {
 		interactionEnabled = false;
@@ -91,27 +77,65 @@ function setQuestion(id, state, value, choices, animate) {
 			}
 		}
 	});
-		
-	var oldBlock = $(".qBlock:first");
+	
+	setTimeout(function(){refresh(animate, animateDirection)}, 100);
+}
+
+function refresh(animate, animateDirection) {
+	var state = currentDisplayData.state;
+
+	if ($(".qBlock").length > 1) {
+		oldBlock = $(".qBlock:first");
+	}
 	currentBlock = $(".qBlock:last");
 	
-	if (animate) {
-		oldBlock.animate({
-			scale: '0.75'
-		}, 250, function() {
-			$(this).animate({
-				left: '-150%'
+	var showNewBlock = function() {
+		currentBlock.css("margin-top", "-" + (currentBlock.outerHeight()/2 + 29) + "px");
+		currentBlock.css("left", -animateDirection * 150 + "%");
+		currentBlock.css("visibility", "visible");
+		
+		if (animate) {
+			currentBlock.scale(0.75);
+			currentBlock.animate({
+				left: '50%'
 			}, 500, function() {
-				$(this).remove();
-				addNewBlock(id, animate);
+				$(this).animate({
+					scale: '1.0'
+				}, 250);
 			});
-		});
-	} else {
-		setTimeout(function(){addNewBlock(id, animate)}, 100);
+		} else {
+			currentBlock.css("left", "50%");
+		}
+		
+		if (state == "finished") {
+			setQuestionResults(currentDisplayData.answer, currentDisplayData.choices);
+		} else {
+			clearQuestionResults();
+		}
+		
+		loading = false;
 	}
 	
-	loading = false;
-}
+	if (oldBlock != null) {
+		if (animate) {
+			oldBlock.animate({
+				scale: '0.75'
+			}, 250, function() {
+				$(this).animate({
+					left: animateDirection * 150 + '%'
+				}, 500, function() {
+					$(this).remove();
+					showNewBlock();
+				});
+			});
+		} else {
+			oldBlock.remove();
+			showNewBlock();
+		}
+	} else {
+		showNewBlock();
+	}
+};
 
 function setQuestionResults(answer, choices) {
 	for (var i = 0; i < choices.length; i++) {
