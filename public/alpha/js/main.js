@@ -2,6 +2,7 @@ var timestamp = null;
 var loading = false;
 var interactionEnabled = true;
 
+var activeID = -1;
 var activeSortIndex = -1;
 var oldBlock = null;
 var currentBlock = null;
@@ -20,7 +21,19 @@ function waitForMsg() {
 					
 					if (displayData.format == "multiple-choice") {						
 						currentDisplayData = displayData;
-						reload();
+						
+						if (activeID != displayData.id) {
+							reload();
+						}
+						
+						if (displayData.state == "finished") {
+							setQuestionResults(currentDisplayData.answer, currentDisplayData.choices);
+						} else {
+							clearQuestionResults();
+						}
+						
+						loading = false;
+
 					}
 				}
 			}
@@ -35,14 +48,14 @@ function reload() {
 	var value = currentDisplayData.value;
 	var choices = currentDisplayData.choices;
 	var animate = ($(".qBlock").length > 0 && activeSortIndex != currentDisplayData.sort_index);
-	var animteDirection = 0;
+	var animateDirection = 0;
 	if (currentDisplayData.sort_index > activeSortIndex) {
 		animateDirection = -1;
 	} else if (currentDisplayData.sort_index < activeSortIndex) {
 		animateDirection = 1;
 	}
-	var answer = currentDisplayData.answer;
 	
+	activeID = currentDisplayData.id;
 	activeSortIndex = currentDisplayData.sort_index;
 	
 	if (state == "finished") {
@@ -72,6 +85,7 @@ function reload() {
 		if (interactionEnabled) {
 			if (!$(this).hasClass("selected")) {
 				$(this).addClass("selected").removeClass("notselected").siblings().removeClass("selected").addClass("notselected");
+				
 			} else {
 				$(this).parent().children().removeClass("selected").removeClass("notselected");
 			}
@@ -106,14 +120,6 @@ function refresh(animate, animateDirection) {
 		} else {
 			currentBlock.css("left", "50%");
 		}
-		
-		if (state == "finished") {
-			setQuestionResults(currentDisplayData.answer, currentDisplayData.choices);
-		} else {
-			clearQuestionResults();
-		}
-		
-		loading = false;
 	}
 	
 	if (oldBlock != null) {

@@ -1,10 +1,10 @@
 {
 	"type": "question",
 	"id": 3,
-	"sort_index": 2,
+	"sort_index": 3,
 	"total_count": 5,
 	"format": "multiple-choice",
-	"state": "pending",
+	"state": "finished",
     "value": "What is your favorite band?",
     "answer": 1,
     "choices": [
