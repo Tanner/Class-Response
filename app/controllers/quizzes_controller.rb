@@ -26,9 +26,18 @@ class QuizzesController < ApplicationController
             result['answer'] = @current_question.correct_answer.id
         end
 
+        totalSubmissions = Submission.where("question_id" => @current_question.id).count
+        result["total"] = totalSubmissions
+
         choices = Array.new
         @current_question.answers.each do |answer|
-            choices.push Hash["value" => answer.answer, "id" => answer.id]
+            answerHash = Hash["value" => answer.answer, "id" => answer.id]
+
+            if (@current_question.state)
+                answerHash["percent"] = Submission.where("question_id" => @current_question.id, "answer_id" => answer.id).count / totalSubmissions;
+            end
+
+            choices.push answerHash
         end
         result['choices'] = choices
 
