@@ -1,4 +1,5 @@
 require 'json/add/rails'
+require 'CSV'
 
 class QuizzesController < ApplicationController
     def show
@@ -21,5 +22,20 @@ class QuizzesController < ApplicationController
         result['choices'] = choices
 
         render :text => result.to_json 
+    end
+
+    def results
+        @quiz = Quiz.find(params[:id])
+        @students = Student.all
+        csv = CSV.generate do |csv|
+            @students.each do |student|
+                submissions = student.submissions.where(:quiz_id => @quiz.id)
+                submissions.each do |submission|
+                    csv << [student.identifier, @quiz.name, submission.question.question, submission.answer.answer]
+                end
+            end
+        end
+
+        render :text => csv
     end
 end
