@@ -23,7 +23,7 @@ class QuizzesController < ApplicationController
 
         # Question is finished if state is true and pending if not
         if (@current_question.state)
-            result['answer'] = @current_question.answer.id
+            result['answer'] = @current_question.correct_answer.id
         end
 
         choices = Array.new
