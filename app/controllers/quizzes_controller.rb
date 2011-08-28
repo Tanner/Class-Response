@@ -24,7 +24,7 @@ class QuizzesController < ApplicationController
         render :text => result.to_json 
     end
 
-    def results
+    def csv
         @quiz = Quiz.find(params[:id])
         @students = Student.all
         csv = CSV.generate do |csv|
