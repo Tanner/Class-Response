@@ -1,0 +1,37 @@
+{
+"quiz": {
+    "name": "CS 1331 Quiz 1",
+    "questions": [
+        {
+        	"id": "0",
+        	"question": "How are you?",
+        	"answer": [
+        		{"id": 0, "value": "Good"},
+        		{"id": 1, "value": "Bad"},
+        		{"id" : 2, "value": "OK"}
+        	],
+        	"correctAnswer": -1; 
+        },
+        {
+        	"id": "1",
+        	"question": "What year are you?",
+        	"answer": [
+        		{"id": 0, "value": "First Year"},
+        		{"id": 1, "value": "Second Year"},
+        		{"id" : 2, "value": "Third Year"}
+        	],
+        	"correctAnswer": -1; 
+        },
+        {
+        	"id": "2",
+        	"question": "What are your TA's names?",
+        	"answer": [
+        		{"id": 0, "value": "Tanner and Chris"},
+        		{"id": 1, "value": "Ryan and Kevin"},
+        		{"id" : 2, "value": "Ryan and Tanner"}
+        	],
+        	"correctAnswer": 2; 
+        }
+    ]
+}
+} 
