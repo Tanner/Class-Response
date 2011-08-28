@@ -21,6 +21,7 @@ class QuizzesController < ApplicationController
         result['state'] = @question.state
         result['value'] = @current_question.question
 
+        # Question is finished if state is true and pending if not
         if (@question.state)
             result['answer'] = @current_question.answer.id
         end
