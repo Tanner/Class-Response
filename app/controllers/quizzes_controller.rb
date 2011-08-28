@@ -3,13 +3,15 @@ require 'CSV'
 
 class QuizzesController < ApplicationController
     def show
-        @quiz = Quiz.find(params[:id])
+        @quiz_session = QuizSession.find(params[:id])
+        @quiz = @quiz_session.quiz
         
         render 'show'
     end
 
     def json
-        @quiz = Quiz.find(params[:id])
+        @quiz_session = QuizSession.find(params[:id])
+        @quiz = @quiz_session.quiz
         @current_question = @quiz.current_question
 
         result = Hash.new
@@ -77,7 +79,8 @@ class QuizzesController < ApplicationController
     end
 
     def csv
-        @quiz = Quiz.find(params[:id])
+        @quiz_session = QuizSession.find(params[:id])
+        @quiz = @quiz_session.quiz
         @students = Student.all
         csv = CSV.generate do |csv|
             header = Array.new
