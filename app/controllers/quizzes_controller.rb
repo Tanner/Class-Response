@@ -18,11 +18,11 @@ class QuizzesController < ApplicationController
         result['sort_index'] = @current_question.sort
         result['total_count'] = @quiz.questions.count
         result['format'] = "multiple-choice"
-        result['state'] = @question.state
+        result['state'] = @current_question.state
         result['value'] = @current_question.question
 
         # Question is finished if state is true and pending if not
-        if (@question.state)
+        if (@current_question.state)
             result['answer'] = @current_question.answer.id
         end
 
