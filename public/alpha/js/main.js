@@ -24,16 +24,15 @@ function waitForMsg() {
 						
 						if (activeID != displayData.id) {
 							reload();
-						}
-						
-						if (displayData.state == "finished") {
-							setQuestionResults(currentDisplayData.answer, currentDisplayData.choices);
 						} else {
-							clearQuestionResults();
+							if (currentDisplayData.state == "finished") {
+								setQuestionResults(currentDisplayData.answer, currentDisplayData.choices);
+							} else {
+								clearQuestionResults();
+							}
 						}
 						
 						loading = false;
-
 					}
 				}
 			}
@@ -92,17 +91,20 @@ function reload() {
 		}
 	});
 	
+	// give browser a chance to render before animating blocks
 	setTimeout(function(){refresh(animate, animateDirection)}, 100);
 }
 
 function refresh(animate, animateDirection) {
-	var state = currentDisplayData.state;
-
+	// instantiate new and old block jQuery references
 	if ($(".qBlock").length > 1) {
 		oldBlock = $(".qBlock:first");
+	} else {
+		oldBlock = null;
 	}
 	currentBlock = $(".qBlock:last");
 	
+	// function to animate in new block
 	var showNewBlock = function() {
 		currentBlock.css("margin-top", "-" + (currentBlock.outerHeight()/2 + 29) + "px");
 		currentBlock.css("left", -animateDirection * 150 + "%");
@@ -122,6 +124,7 @@ function refresh(animate, animateDirection) {
 		}
 	}
 	
+	// animate old block out first
 	if (oldBlock != null) {
 		if (animate) {
 			oldBlock.animate({
@@ -141,11 +144,18 @@ function refresh(animate, animateDirection) {
 	} else {
 		showNewBlock();
 	}
+
+	// show answers, if finished	
+	if (currentDisplayData.state == "finished") {
+		setQuestionResults(currentDisplayData.answer, currentDisplayData.choices);
+	} else {
+		clearQuestionResults();
+	}
 };
 
 function setQuestionResults(answer, choices) {
 	for (var i = 0; i < choices.length; i++) {
-		var choice = $("#selectable li").eq(i);
+		var choice = currentBlock.find("#selectable li").eq(i);
 		
 		if (i == answer) {
 			choice.addClass("correct");
@@ -160,7 +170,7 @@ function setQuestionResults(answer, choices) {
 }
 
 function clearQuestionResults() {
-	$("#selectable li").each(function() {
+	currentBlock.find("#selectable li").each(function() {
 		$(this).find(".percent").remove();
 		$(this).removeClass("correct");
 	});

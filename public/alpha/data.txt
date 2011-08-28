@@ -1,7 +1,7 @@
 {
 	"type": "question",
 	"id": 3,
-	"sort_index": 3,
+	"sort_index": 1,
 	"total_count": 5,
 	"format": "multiple-choice",
 	"state": "finished",
