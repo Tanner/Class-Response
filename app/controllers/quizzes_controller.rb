@@ -49,6 +49,7 @@ class QuizzesController < ApplicationController
     def submit
         parsed_json = ActiveSupport::JSON.decode(params[:json]);
 
+        quiz_session_id = parsed_json["quiz_session_id"]
         question_id = parsed_json["question_id"]
         answer_id = parsed_json["answer_id"]
         student_identifier = parsed_json["student_identifier"]
@@ -57,12 +58,13 @@ class QuizzesController < ApplicationController
             # JSON is valid
             student_id = Student.where("identifier" => student_identifier)
             if (student_id)
-                old_submission = Submission.where("question_id" => question_id, "student_id" => student_id)
+                old_submission = Submission.where("quiz_session_id" => quiz_session_id, "question_id" => question_id, "student_id" => student_id)
                 if (old_submission != nil)
                     old_submission.delete
                 end
 
                 submission = Submission.new
+                submission.quiz_session_id = quiz_session_id
                 submission.question_id = question_id
                 submission.answer_id = answer_id
                 submission.quiz_id = params[:id]
