@@ -13,11 +13,17 @@ class QuizzesController < ApplicationController
         @current_question = @quiz.current_question
 
         result = Hash.new
-        result['question_id'] = @current_question.id
+        result['type'] = "question"
+        result['id'] = @current_question.id
         result['sort_index'] = @current_question.sort
         result['total_count'] = @quiz.questions.count
-        result['type'] = "multiple-choice"
+        result['format'] = "multiple-choice"
+        result['state'] = @question.state
         result['value'] = @current_question.question
+
+        if (@question.state)
+            result['answer'] = @current_question.answer.id
+        end
 
         choices = Array.new
         @current_question.answers.each do |answer|
