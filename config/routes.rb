@@ -1,6 +1,7 @@
 ClassResponse::Application.routes.draw do
   constraints(:id => /[0-9]+/) do
     match ':id' => 'quizzes#show'
+    match ':id/submit/:json' => 'quizzes#submit'
     match ':id/json' => 'quizzes#json'
     match ':id/csv' => 'quizzes#csv'
   end

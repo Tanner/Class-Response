@@ -28,6 +28,28 @@ class QuizzesController < ApplicationController
         render :text => result.to_json 
     end
 
+    def submit
+        parsed_json = ActiveSupport::JSON.decode(params[:json]);
+
+        question_id = parsed_json["question_id"]
+        answer_id = parsed_json["answer_id"]
+        student_identifier = parsed_json["student_identifier"]
+
+        if (question_id && answer_id && student_identifier)
+            # JSON is valid
+            submission = Submission.new
+            submission.question_id = question_id
+            submission.answer_id = answer_id
+            submission.quiz_id = params[:id]
+            submission.student_id = Student.where("identifier" => student_identifier)
+            submission.save
+
+            render :text => [question_id, answer_id, student_identifier]
+        else
+            head :bad_request
+        end
+    end
+
     def csv
         @quiz = Quiz.find(params[:id])
         @students = Student.all
