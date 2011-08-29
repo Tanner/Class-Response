@@ -59,12 +59,10 @@ class QuizzesController < ApplicationController
     end
 
     def submit
-        parsed_json = ActiveSupport::JSON.decode(params[:json]);
-
-        quiz_session_id = parsed_json["quiz_session_id"]
-        question_id = parsed_json["question_id"]
-        answer_id = parsed_json["answer_id"]
-        student_identifier = parsed_json["student_identifier"]
+        quiz_session_id = params[:quiz_session_id]
+        question_id = params[:question_id]
+        answer_id = params[:answer_id]
+        student_identifier = params[:student_identifier]
 
         if (question_id && answer_id && student_identifier)
             # JSON is valid
