@@ -5,6 +5,9 @@ ClassResponse::Application.routes.draw do
     match ':id/json/:time' => 'quizzes#json'
     match ':id/csv' => 'quizzes#csv'
   end
+  
+  root :to => 'welcome#index'
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
