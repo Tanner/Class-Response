@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110828205232) do
+ActiveRecord::Schema.define(:version => 20110829135431) do
 
   create_table "answers", :force => true do |t|
     t.string   "answer"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 20110828205232) do
     t.datetime "updated_at"
     t.integer  "correct_answer_id"
     t.integer  "sort"
-    t.boolean  "state",             :default => false
+    t.boolean  "finished",          :default => false
   end
 
   create_table "quiz_sessions", :force => true do |t|
