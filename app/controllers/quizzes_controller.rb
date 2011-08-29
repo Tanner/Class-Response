@@ -19,6 +19,7 @@ class QuizzesController < ApplicationController
         if (time > Time.at(params[:time].to_i))
             result = Hash.new
             result['type'] = "question"
+            result['quiz_session_id'] = @quiz_session.id 
             result['question_id'] = @current_question.id
             result['sort_index'] = @current_question.sort
             result['total_questions'] = @quiz.questions.count
