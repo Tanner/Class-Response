@@ -21,7 +21,7 @@ function waitForMsg() {
 					if (displayData.format == "multiple-choice") {						
 						currentDisplayData = displayData;
 						
-						if (activeID != displayData.id) {
+						if (activeID != displayData.question_id) {
 							reload();
 						} else {
 							if (currentDisplayData.state == "finished") {
