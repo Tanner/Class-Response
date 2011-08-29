@@ -159,7 +159,7 @@ function setQuestionResults(answerID, choices) {
 			choice.append("<div class='percent'></div>");
 		}
 		
-		choice.find(".percent").html(choices[i].percent);
+		choice.find(".percent").html(choices[i].percent * 100 + "%");
 	}
 }
 
