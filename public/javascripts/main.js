@@ -26,7 +26,7 @@ function waitForMsg() {
 						if (activeID != displayData.question_id) {
 							reload();
 						} else {
-							if (currentDisplayData.state == "finished") {
+							if (currentDisplayData.finished) {
 								setQuestionResults(currentDisplayData.answer, currentDisplayData.choices);
 							} else {
 								clearQuestionResults();
@@ -147,11 +147,11 @@ function refresh(animate, animateDirection) {
 	}
 };
 
-function setQuestionResults(answer, choices) {
+function setQuestionResults(answerID, choices) {
 	for (var i = 0; i < choices.length; i++) {
 		var choice = currentBlock.find("#selectable li").eq(i);
 		
-		if (i == answer) {
+		if (choices[i].id == answerID) {
 			choice.addClass("correct");
 		}
 				
