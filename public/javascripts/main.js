@@ -18,8 +18,14 @@ function waitForMsg() {
 				if (displayData.type == "question") {
 					setPageControl(parseInt(displayData.sort_index, 10), parseInt(displayData.total_count, 10));
 					
-					if (displayData.format == "multiple-choice") {						
+					if (displayData.format == "multiple-choice") {
 						currentDisplayData = displayData;
+						
+						if (currentDisplayData.state == "finished") {
+							interactionEnabled = false;
+						} else {
+							interactionEnabled = true;
+						}
 						
 						if (activeID != displayData.question_id) {
 							reload();
@@ -55,12 +61,6 @@ function reload() {
 	
 	activeID = currentDisplayData.id;
 	activeSortIndex = currentDisplayData.sort_index;
-	
-	if (state == "finished") {
-		interactionEnabled = false;
-	} else {
-		interactionEnabled = true;
-	}
 	
 	// create block
 	var markup = "\
