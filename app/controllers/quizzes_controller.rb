@@ -39,7 +39,7 @@ class QuizzesController < ApplicationController
             @current_question.answers.each do |answer|
                 answerHash = Hash["value" => answer.answer, "id" => answer.id]
 
-                if (@current_question.state)
+                if (@current_question.finished)
                     if (totalSubmissions != 0)
                         answerHash["percent"] = Submission.where("question_id" => @current_question.id, "answer_id" => answer.id).count / totalSubmissions;
                     else
