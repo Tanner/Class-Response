@@ -81,7 +81,14 @@ function reload() {
 				
 				var answerID = currentDisplayData.choices[$(this).index()].id;
 				
-				$.post(document.URL + "/submit/", {quiz_session_id: currentDisplayData.quiz_session_id, question_id: currentDisplayData.question_id, answer_id: answerID, student_id: "902708035"}, function(data) {
+				var postData = {
+					quiz_session_id: currentDisplayData.quiz_session_id,
+					question_id: currentDisplayData.question_id,
+					answer_id: answerID,
+					student_identifier: "902708035"
+				};
+								
+				$.post(document.URL + "/submit/", postData, function(data) {
 					console.log(data);
 				});
 			} else {

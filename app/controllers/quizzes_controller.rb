@@ -59,17 +59,18 @@ class QuizzesController < ApplicationController
     end
 
     def submit
-        quiz_session_id = params[:quiz_session_id]
-        question_id = params[:question_id]
-        answer_id = params[:answer_id]
+#     	render :text => params.inspect
+        quiz_session_id = params[:quiz_session_id].to_i
+        question_id = params[:question_id].to_i
+        answer_id = params[:answer_id].to_i
         student_identifier = params[:student_identifier]
-
+		
         if (question_id && answer_id && student_identifier)
             # JSON is valid
             student_id = Student.where("identifier" => student_identifier)
             if (student_id)
                 old_submission = Submission.where("quiz_session_id" => quiz_session_id, "question_id" => question_id, "student_id" => student_id)
-                if (old_submission != nil)
+                if (old_submission.empty?)
                     old_submission.delete
                 end
 
