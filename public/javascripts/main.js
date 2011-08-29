@@ -1,4 +1,4 @@
-var timestamp = null;
+var timestamp = 0;
 var loading = false;
 var interactionEnabled = true;
 
@@ -10,12 +10,11 @@ var currentDisplayData = null;
 
 function waitForMsg() {
 	if (!loading) {
-		$.getJSON("getData.php?timestamp=" + timestamp, function(data) {
-			if (data != null && data.msg != null && data.msg != "") {
+        $.getJSON("/1/json/" + timestamp, function(displayData) {
+			if (displayData != null && displayData.timestamp && displayData.timestamp != "") {
 				loading = true;
-				timestamp = data.timestamp;
+				timestamp = displayData.timestamp;
 				
-				var displayData = $.parseJSON(data.msg);
 				if (displayData.type == "question") {
 					setPageControl(parseInt(displayData.sort_index, 10), parseInt(displayData.total_count, 10));
 					
