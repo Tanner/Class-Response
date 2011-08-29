@@ -79,6 +79,11 @@ function reload() {
 			if (!$(this).hasClass("selected")) {
 				$(this).addClass("selected").removeClass("notselected").siblings().removeClass("selected").addClass("notselected");
 				
+				var answerID = displayData.choices[$(this).index()].id;
+				
+				$.post(document.URL = "/submit/", {quiz_session_id: displayData.quiz_session_id, question_id: displayData.question_id, answer_id: answerID, student_id: "902708035"}, function(data) {
+					console.log(data);
+				});
 			} else {
 				$(this).parent().children().removeClass("selected").removeClass("notselected");
 			}
