@@ -10,7 +10,7 @@ var currentDisplayData = null;
 
 function waitForMsg() {
 	if (!loading) {
-        $.getJSON("json/" + timestamp, function(displayData) {
+        $.getJSON(document.URL + "/json/" + timestamp, function(displayData) {
 			if (displayData != null && displayData.timestamp && displayData.timestamp != "") {
 				loading = true;
 				timestamp = displayData.timestamp;
