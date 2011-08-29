@@ -6,7 +6,7 @@ class QuizzesController < ApplicationController
         @quiz_session = QuizSession.find(params[:id])
         @quiz = @quiz_session.quiz
         
-        render 'show'
+        render 'quiz'
     end
 
     def json
