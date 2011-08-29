@@ -21,11 +21,7 @@ function waitForMsg() {
 					if (displayData.format == "multiple-choice") {
 						currentDisplayData = displayData;
 						
-						if (currentDisplayData.state == "finished") {
-							interactionEnabled = false;
-						} else {
-							interactionEnabled = true;
-						}
+						interactionEnabled = !displayData.finished;
 						
 						if (activeID != displayData.question_id) {
 							reload();
@@ -48,7 +44,6 @@ function waitForMsg() {
 }
 
 function reload() {
-	var state = currentDisplayData.state;
 	var value = currentDisplayData.value;
 	var choices = currentDisplayData.choices;
 	var animate = ($(".qBlock").length > 0 && activeSortIndex != currentDisplayData.sort_index);
@@ -145,7 +140,7 @@ function refresh(animate, animateDirection) {
 	}
 
 	// show answers, if finished	
-	if (currentDisplayData.state == "finished") {
+	if (currentDisplayData.finished) {
 		setQuestionResults(currentDisplayData.answer, currentDisplayData.choices);
 	} else {
 		clearQuestionResults();
