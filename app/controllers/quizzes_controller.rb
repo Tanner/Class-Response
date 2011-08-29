@@ -24,11 +24,11 @@ class QuizzesController < ApplicationController
             result['total_count'] = @quiz.questions.count
             result['format'] = "multiple-choice"
             result['timestamp'] = [@quiz.updated_at, @current_question.updated_at].max.to_time.to_i
-            result['state'] = @current_question.state
+            result['finished'] = @current_question.finished
             result['value'] = @current_question.question
 
             # Question is finished if state is true and pending if not
-            if (@current_question.state)
+            if (@current_question.finished)
                 result['answer'] = @current_question.correct_answer.id
             end
 
