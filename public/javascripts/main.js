@@ -16,7 +16,7 @@ function waitForMsg() {
 				timestamp = displayData.timestamp;
 				
 				if (displayData.type == "question") {
-					setPageControl(parseInt(displayData.sort_index, 10), parseInt(displayData.total_count, 10));
+					setPageControl(parseInt(displayData.sort_index, 10), parseInt(displayData.total_questions, 10));
 					
 					if (displayData.format == "multiple-choice") {
 						currentDisplayData = displayData;
