@@ -14,36 +14,43 @@ class QuizzesController < ApplicationController
         @quiz = @quiz_session.quiz
         @current_question = @quiz.current_question
 
-        result = Hash.new
-        result['type'] = "question"
-        result['question_id'] = @current_question.id
-        result['sort_index'] = @current_question.sort
-        result['total_count'] = @quiz.questions.count
-        result['format'] = "multiple-choice"
-        result['state'] = @current_question.state
-        result['value'] = @current_question.question
+        time = [@quiz.updated_at, @current_question.updated_at].max
 
-        # Question is finished if state is true and pending if not
-        if (@current_question.state)
-            result['answer'] = @current_question.correct_answer.id
-        end
+        if (time > Time.at(params[:time].to_i))
+            result = Hash.new
+            result['type'] = "question"
+            result['question_id'] = @current_question.id
+            result['sort_index'] = @current_question.sort
+            result['total_count'] = @quiz.questions.count
+            result['format'] = "multiple-choice"
+            result['timestamp'] = [@quiz.updated_at, @current_question.updated_at].max.to_time.to_i
+            result['state'] = @current_question.state
+            result['value'] = @current_question.question
 
-        totalSubmissions = Submission.where("question_id" => @current_question.id).count
-        result["total"] = totalSubmissions
-
-        choices = Array.new
-        @current_question.answers.each do |answer|
-            answerHash = Hash["value" => answer.answer, "id" => answer.id]
-
+            # Question is finished if state is true and pending if not
             if (@current_question.state)
-                answerHash["percent"] = Submission.where("question_id" => @current_question.id, "answer_id" => answer.id).count / totalSubmissions;
+                result['answer'] = @current_question.correct_answer.id
             end
 
-            choices.push answerHash
-        end
-        result['choices'] = choices
+            totalSubmissions = Submission.where("question_id" => @current_question.id).count
+            result["total"] = totalSubmissions
 
-        render :text => result.to_json 
+            choices = Array.new
+            @current_question.answers.each do |answer|
+                answerHash = Hash["value" => answer.answer, "id" => answer.id]
+
+                if (@current_question.state)
+                    answerHash["percent"] = Submission.where("question_id" => @current_question.id, "answer_id" => answer.id).count / totalSubmissions;
+                end
+
+                choices.push answerHash
+            end
+            result['choices'] = choices
+
+            render :text => result.to_json 
+        else
+            head :ok 
+        end
     end
 
     def submit
