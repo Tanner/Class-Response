@@ -59,7 +59,7 @@ function reload() {
 		animateDirection = 1;
 	}
 	
-	activeID = currentDisplayData.id;
+	activeID = currentDisplayData.question_id;
 	activeSortIndex = currentDisplayData.sort_index;
 	
 	// create block
