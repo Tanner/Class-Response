@@ -21,7 +21,7 @@ class QuizzesController < ApplicationController
             result['type'] = "question"
             result['question_id'] = @current_question.id
             result['sort_index'] = @current_question.sort
-            result['total_count'] = @quiz.questions.count
+            result['total_questions'] = @quiz.questions.count
             result['format'] = "multiple-choice"
             result['timestamp'] = [@quiz.updated_at, @current_question.updated_at].max.to_time.to_i
             result['finished'] = @current_question.finished
@@ -33,7 +33,7 @@ class QuizzesController < ApplicationController
             end
 
             totalSubmissions = Submission.where("question_id" => @current_question.id).count
-            result["total"] = totalSubmissions
+            result["total_submissions"] = totalSubmissions
 
             choices = Array.new
             @current_question.answers.each do |answer|
