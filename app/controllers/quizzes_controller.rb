@@ -59,13 +59,12 @@ class QuizzesController < ApplicationController
     end
 
     def submit
-#     	render :text => params.inspect
         quiz_session_id = params[:quiz_session_id].to_i
         question_id = params[:question_id].to_i
         answer_id = params[:answer_id].to_i
         student_identifier = params[:student_identifier]
 		
-        if (question_id && answer_id && student_identifier)
+        if (quiz_session_id && question_id && answer_id && student_identifier && QuizSession.exists?(quiz_session_id) && Question.exists?(question_id) && Answer.exists?(answer_id) && Student.exists?(:identifier => student_identifier))
             # JSON is valid
             student_id = Student.where("identifier" => student_identifier)
             if (student_id)
@@ -74,6 +73,7 @@ class QuizzesController < ApplicationController
                     old_submission.delete
                 end
 
+                # Needs to validate input from user
                 submission = Submission.new
                 submission.quiz_session_id = quiz_session_id
                 submission.question_id = question_id
