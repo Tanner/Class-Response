@@ -12,7 +12,7 @@ class QuizzesController < ApplicationController
     def json
         @quiz_session = QuizSession.find(params[:id])
         @quiz = @quiz_session.quiz
-        @current_question = @quiz.current_question
+        @current_question = @quiz_session.current_question
 
         time = [@quiz.updated_at, @current_question.updated_at].max
 
