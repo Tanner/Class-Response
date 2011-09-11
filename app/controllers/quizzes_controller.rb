@@ -14,9 +14,9 @@ class QuizzesController < ApplicationController
         @quiz = @quiz_session.quiz
         @current_question = @quiz_session.current_question
 
-        time = [@quiz_session.updated_at, @quiz.updated_at, @current_question.updated_at].max
+        time = [@quiz_session.updated_at, @quiz.updated_at, @current_question.updated_at].max.to_time.to_i
 
-        if (time > Time.at(params[:time].to_i))
+        if (time > params[:time].to_i)
             result = Hash.new
             result['type'] = "question"
             result['quiz_session_id'] = @quiz_session.id 
@@ -24,7 +24,7 @@ class QuizzesController < ApplicationController
             result['sort_index'] = @current_question.sort
             result['total_questions'] = @quiz.questions.count
             result['format'] = "multiple-choice"
-            result['timestamp'] = [@quiz.updated_at, @current_question.updated_at].max.to_time.to_i
+            result['timestamp'] = time
             result['finished'] = @current_question.finished
             result['value'] = @current_question.question
 
