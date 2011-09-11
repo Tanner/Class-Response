@@ -14,7 +14,7 @@ class QuizzesController < ApplicationController
         @quiz = @quiz_session.quiz
         @current_question = @quiz_session.current_question
 
-        time = [@quiz.updated_at, @current_question.updated_at].max
+        time = [@quiz_session.updated_at, @quiz.updated_at, @current_question.updated_at].max
 
         if (time > Time.at(params[:time].to_i))
             result = Hash.new
