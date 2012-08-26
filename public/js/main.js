@@ -195,5 +195,5 @@ function setPageControl(sortIndex, totalCount) {
 }
 
 $(document).ready(function() {
-	waitForMsg();
+	// waitForMsg();
 });
