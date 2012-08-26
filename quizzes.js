@@ -2,7 +2,14 @@
 function show(req, res) {
 	var id = req.params.id;
 	
-	res.send('quiz id ' + id);
+	res.render('default_layout', function(err, html) {
+		if (err) {
+			console.log(err);
+			return;
+		}
+
+		res.send(html);
+	});
 }
 
 exports.show = show;
