@@ -9,14 +9,10 @@ function index(req, res) {
 	});
 
 	client.on("connect", function(error) {
-		console.log("Database is ready.");
-
-		client.llen("quizzes", redis.print);
-		client.lrange("quizzes", 0, client.llen("quizzes"), redis.print);
-
-		client.quit();
-
-		res.send("oh hai");
+		client.lrange("quizzes", 0, -1, function(err, reply) {
+			res.send(reply);
+			client.quit();
+		});
 	});
 }
 
