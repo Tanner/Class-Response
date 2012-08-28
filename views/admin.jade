@@ -15,3 +15,8 @@ block body
 						= quiz.name
 		else
 			span No quizzes.
+	div#createQuiz
+		form(method="post")
+			label Quiz Name
+			input(type="text", name="name")
+			input(type="submit", value="Create Quiz")
