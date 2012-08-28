@@ -3,5 +3,14 @@ extends default
 block title
 	| Quiz
 
+block scripts
+	script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
+	script(src='/js/jquery-animate-css-rotate-scale.js')
+	script(src='/js/jquery-css-transform.js')
+	script(src='/socket.io/socket.io.js')
+
+	script(src='/js/main.js')
+	script(src='/js/connection.js')
+
 block body
 	p #{id}
