@@ -73,14 +73,13 @@ function getQuizzes(client, callback) {
 function getQuiz(client, id, callback) {
 	var quiz = {};
 
-	quiz.id = id;
-
-	client.hget("quiz:" + id, "name", function(err, reply) {
+	client.hgetall("quiz:" + id, function(err, reply) {
 		if (err) {
-			return callback(err, quiz);
+			return callback(err, null);
 		}
 
-		quiz.name = reply;
+		quiz.id = id;
+		quiz.name = reply.name;
 
 		return callback(null, quiz);
 	});
