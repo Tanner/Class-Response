@@ -1,4 +1,5 @@
 
+var database = require("./database");
 var sockets = require('./sockets');
 
 function show(req, res) {
@@ -16,12 +17,16 @@ function show(req, res) {
 		}
 	);
 
+	var databaseClient = database.createClient();
 	var io = sockets.startSocketServer();
-	io.sockets.on('connection', function (socket) {
-		socket.emit('quiz', {
-			id: id
+
+	databaseClient.on("connect", function(error) {
+		io.sockets.on('connection', function (socket) {
+			database.getQuiz(databaseClient, id, function (err, quiz) {
+				socket.emit('quiz', quiz);
+			});
 		});
-	})
+	});
 }
 
 exports.show = show;
