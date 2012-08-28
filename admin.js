@@ -9,8 +9,16 @@ function index(req, res) {
 	});
 
 	client.on("connect", function(error) {
-		client.lrange("quizzes", 0, -1, function(err, reply) {
-			res.send(reply);
+		client.lrange("quizzes", 0, -1, function(err, reply) {	
+			res.render('admin', { quizzes: reply }, function(err, html) {
+				if (err) {
+					console.log(err);
+					return;
+				}
+
+				res.send(html);
+			});
+
 			client.quit();
 		});
 	});
