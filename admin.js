@@ -9,7 +9,12 @@ function index(req, res) {
 	});
 
 	client.on("connect", function(error) {
-		getQuizzes(client, function(quizzes) {
+		getQuizzes(client, function(err, quizzes) {
+			if (err) {
+				console.log(err);
+				return;
+			}
+
 			data = {quizzes: quizzes};
 
 			res.render('admin', data, function(err, html) {
@@ -30,13 +35,21 @@ function getQuizzes(client, callback) {
 	client.lrange("quizzes", 0, -1, function(err, reply) {
 		quizzes = [];
 
+		if (err) {
+			return callback(err, null);
+		}
+
 		if (reply) {
 			reply.forEach(function(id) {
-				getQuiz(client, id, function(quiz) {
+				getQuiz(client, id, function(err, quiz) {
+					if (err) {
+						return callback(err, null);
+					}
+
 					quizzes.push(quiz);
 
 					if (quizzes.length == reply.length) {
-						return callback(quizzes);
+						return callback(null, quizzes);
 					}
 				});
 			});
@@ -51,12 +64,12 @@ function getQuiz(client, id, callback) {
 
 	client.hget("quiz:" + id, "name", function(err, reply) {
 		if (err) {
-			return err;
+			return callback(err, quiz);
 		}
 
 		quiz.name = reply;
 
-		return callback(quiz);
+		return callback(null, quiz);
 	});
 }
 
