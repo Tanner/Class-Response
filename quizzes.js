@@ -1,4 +1,6 @@
 
+var sockets = require('./sockets');
+
 function show(req, res) {
 	var id = req.params.id;
 	
@@ -13,6 +15,8 @@ function show(req, res) {
 			res.send(html);
 		}
 	);
+
+	sockets.emit('quiz', { id: id });
 }
 
 exports.show = show;

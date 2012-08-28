@@ -5,7 +5,6 @@ socket.on('connect', function (data) {
 	console.log('Connected');
 });
 
-socket.on('news', function (data) {
+socket.on('quiz', function (data) {
 	console.log(data);
-	socket.emit('my other event', { my: 'data' });
 });
