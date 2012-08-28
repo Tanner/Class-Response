@@ -16,7 +16,12 @@ function show(req, res) {
 		}
 	);
 
-	sockets.emit('quiz', { id: id });
+	var io = sockets.startSocketServer();
+	io.sockets.on('connection', function (socket) {
+		socket.emit('quiz', {
+			id: id
+		});
+	})
 }
 
 exports.show = show;

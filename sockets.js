@@ -3,12 +3,11 @@ var socketio = require('socket.io');
 var io;
 var clients = {};
 
+var app = require('./app.js');
+
 module.exports = {
-    emit: function (id, emission) {
-        io.emit(id, emission);
-    },
-    startSocketServer: function (app) {
-        io = socketio.listen(app);
+    startSocketServer: function () {
+        io = socketio.listen(app.server);
 
         io.configure('development', function () {
             //io.set('transports', ['websocket', 'xhr-polling']);
@@ -38,9 +37,11 @@ module.exports = {
             socket.on('connect_device', function (data, fn) {
                 console.log("data from connected device: " + data);
                 for (var col in data) {
-                        console.log(col + " => " + data[col]);
+                    console.log(col + " => " + data[col]);
                 }
             });
         });
+
+        return io;
     }
 };
