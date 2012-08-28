@@ -31,6 +31,12 @@ function index(req, res) {
 	});
 }
 
+/**
+ * Gets all the quizzes from the database.
+ * @param  {Object}		client		Redis Client
+ * @param  {Function}	callback	Function for callback taking in err and reply
+ * @return {array}					Array of quiz objects
+ */
 function getQuizzes(client, callback) {
 	client.lrange("quizzes", 0, -1, function(err, reply) {
 		quizzes = [];
@@ -57,6 +63,13 @@ function getQuizzes(client, callback) {
 	});
 }
 
+/**
+ * Get the data for a specific quiz ID.
+ * @param  {Object}   client   Redis Client
+ * @param  {Object}   id       ID of a quiz
+ * @param  {Function} callback Function callback taking in an err and quiz
+ * @return {Object}            Object containing id and name fields
+ */
 function getQuiz(client, id, callback) {
 	var quiz = {};
 
