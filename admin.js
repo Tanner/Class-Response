@@ -42,7 +42,8 @@ function createQuiz(req, res) {
 
 	client.on("connect", function(error) {
 		quiz.createQuiz(client, req.body.name, function(err, id) {
-			res.send("Created quiz: "+id);
+			res.writeHead(302, {'Location': '/admin/quiz/' + id});
+			res.end();
 		})
 	});
 }
