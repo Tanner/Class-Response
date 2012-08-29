@@ -13,21 +13,23 @@ function getQuizzes(client, callback) {
 			return callback(err, null);
 		}
 
-		if (reply) {
-			reply.forEach(function(id) {
-				getQuiz(client, id, function(err, quiz) {
-					if (err) {
-						return callback(err, null);
-					}
-
-					quizzes.push(quiz);
-
-					if (quizzes.length == reply.length) {
-						return callback(null, quizzes);
-					}
-				});
-			});
+		if (reply.length == 0) {
+			return callback(null, []);
 		}
+
+		reply.forEach(function(id) {
+			getQuiz(client, id, function(err, quiz) {
+				if (err) {
+					return callback(err, null);
+				}
+
+				quizzes.push(quiz);
+
+				if (quizzes.length == reply.length) {
+					return callback(null, quizzes);
+				}
+			});
+		});
 	});
 }
 
