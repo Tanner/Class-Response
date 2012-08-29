@@ -2,7 +2,7 @@
 var redis = require("redis");
 
 var quiz = require("./models/quiz.js");
-var sockets = require('./sockets');
+var sockets = require('./sockets.js');
 
 function show(req, res) {
 	var id = req.params.id;
