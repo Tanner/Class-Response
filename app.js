@@ -14,8 +14,13 @@ app.set('view engine', 'jade');
 app.set('views', __dirname + '/views');
 app.use(express.static(__dirname + '/public'));
 
+app.use(express.bodyParser());
+
 app.get('/', welcome.show);
-app.get('/admin', admin.index);
+
 app.get('/quiz/:id', quizzes.show);
+
+app.get('/admin', admin.index);
+app.post('/admin', admin.createQuiz);
 
 exports.server = server;

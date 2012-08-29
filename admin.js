@@ -33,4 +33,19 @@ function index(req, res) {
 	});
 }
 
+function createQuiz(req, res) {
+	var client = redis.createClient();
+
+	client.on("error", function(error) {
+		console.log(error);
+	})
+
+	client.on("connect", function(error) {
+		quiz.createQuiz(client, req.body.name, function(err, id) {
+			res.send("Created quiz: "+id);
+		})
+	});
+}
+
 exports.index = index;
+exports.createQuiz = createQuiz;
