@@ -1,4 +1,11 @@
 
+/**
+ * Create a quiz with parameters.
+ * @param  {Object}   client	Redis Client
+ * @param  {String}   name		Name for quiz
+ * @param  {Function} callback	Function for callback taking in err and reply
+ * @return {Integer}			ID of the quiz record
+ */
 function createQuiz(client, name, callback) {
 	client.incr("quizzes-ids", function(err, reply) {
 		if (err) {
