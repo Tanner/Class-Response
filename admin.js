@@ -1,15 +1,17 @@
 
-var database = require('./database');
+var redis = require("redis");
+
+var quiz = require('./models/quiz.js');
 
 function index(req, res) {
-	var client = database.createClient();
+	var client = redis.createClient();
 
 	client.on("error", function(error) {
 		console.log("Error connection to db");
 	});
 
 	client.on("connect", function(error) {
-		database.getQuizzes(client, function(err, quizzes) {
+		quiz.getQuizzes(client, function(err, quizzes) {
 			if (err) {
 				console.log(err);
 				return;

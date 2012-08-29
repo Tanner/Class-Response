@@ -1,5 +1,7 @@
 
-var database = require("./database");
+var redis = require("redis");
+
+var quiz = require("./models/quiz.js");
 var sockets = require('./sockets');
 
 function show(req, res) {
@@ -17,12 +19,12 @@ function show(req, res) {
 		}
 	);
 
-	var databaseClient = database.createClient();
+	var client = redis.createClient();
 	var io = sockets.startSocketServer();
 
-	databaseClient.on("connect", function(error) {
+	client.on("connect", function(error) {
 		io.sockets.on('connection', function (socket) {
-			database.getQuiz(databaseClient, id, function (err, quiz) {
+			quiz.getQuiz(client, id, function (err, quiz) {
 				socket.emit('quiz', quiz);
 			});
 		});

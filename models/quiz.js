@@ -1,10 +1,4 @@
 
-var redis = require("redis");
-
-function createClient() {
-	return redis.createClient();
-}
-
 /**
  * Gets all the quizzes from the database.
  * @param  {Object}		client		Redis Client
@@ -60,6 +54,5 @@ function getQuiz(client, id, callback) {
 	});
 }
 
-exports.createClient = createClient;
 exports.getQuizzes = getQuizzes;
 exports.getQuiz = getQuiz;
