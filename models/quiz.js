@@ -1,4 +1,30 @@
 
+function createQuiz(client, name, callback) {
+	client.incr("quizzes-ids", function(err, reply) {
+		if (err) {
+			return callback(err, null);
+		}
+
+		var id = reply;
+
+		client.hmset("quiz:" + id, {
+			"name": name
+		}, function(err, reply) {
+			if (err) {
+				return callback(err, null);
+			}
+
+			client.lpush("quizzes", id, function(err, reply) {
+				if (err) {
+					return callback(err, null);
+				}
+
+				callback(null, id);
+			})
+		});
+	});
+}
+
 /**
  * Gets all the quizzes from the database.
  * @param  {Object}		client		Redis Client
@@ -56,5 +82,6 @@ function getQuiz(client, id, callback) {
 	});
 }
 
+exports.createQuiz = createQuiz;
 exports.getQuizzes = getQuizzes;
 exports.getQuiz = getQuiz;
